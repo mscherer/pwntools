@@ -243,8 +243,13 @@ def _assembler():
 
     if not checked_assembler_version[gas]:
         checked_assembler_version[gas] = True
-        result = subprocess.check_output([gas, '--version','/dev/null'],
-                                         stderr=subprocess.STDOUT)
+        try:
+            result = subprocess.check_output([gas, '--version','/dev/null'],
+                                             stderr=subprocess.STDOUT)
+        except Exception as E:
+            print E
+            print result
+
         version = re.search(r' (\d\.\d+)', result).group(1)
         if version < '2.19':
             log.warn_once('Your binutils version is too old and may not work!\n'  + \
